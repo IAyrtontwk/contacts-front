@@ -1,0 +1,193 @@
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+      <!-- Titulo App -->
+      <a class="navbar-brand">Contacts TWK</a>
+      <!-- Botones  Sin Sesion-->
+      <button *ngIf="!token" type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#CreateUserModal">
+        Agregar Usuario
+      </button>
+      <button *ngIf="!token" type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#UserSesionModal">
+        Iniciar Sesion
+      </button>
+      <!-- Botones  CON Sesion-->
+      <button *ngIf="token" type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#UserMenuModal">
+        <span class="material-symbols-outlined">
+          {{userSession.name}} account_box
+          </span>
+      </button>
+      
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Buscar contacto">
+        <button class="btn btn-outline-success" type="submit">Buscar</button>
+      </form>
+      
+       <!-- Modal IniciarSesion -->
+       <div class="modal fade" id="UserSesionModal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Iniciar Sesion</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Email:
+              <input
+                type="text"
+                class="form-control"
+                aria-label="Sizing example input"
+                [(ngModel)]="userSession.email"
+              />
+              Contraseña:
+              <input
+                type="password"
+                class="form-control"
+                aria-label="Sizing example input"
+                [(ngModel)]="userSession.pass"
+              />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" (click)="iniciarSesion()" data-bs-dismiss="modal">Iniciar Sesion</button>
+            </div>
+          </div>
+        </div>
+      </div>  
+
+       <!-- Modal UserMenu -->
+      <div class="modal fade" id="UserMenuModal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+       <div class="modal-dialog">
+         <div class="modal-content">
+           <div class="modal-header">
+             <h5 class="modal-title" id="exampleModalLabel3">Menu Usuario</h5>
+             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+           </div>
+           <div class="modal-body">
+            <div class="accordion" id="accordionButtonsUserMenu">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                  <button type="button" class="accordion-button btn-outline-success" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    Modificar datos
+                  </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="floatingInputNameUser" placeholder="name"
+                        [(ngModel)]="userSession.name" />
+                      <label for="floatingInput">name</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="floatingInputEmailUser" placeholder="email"
+                        [(ngModel)]="userSession.email" />
+                      <label for="floatingInput">email</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="floatingInputPassUser" placeholder="password"
+                        [(ngModel)]="userSession.pass" />
+                      <label for="floatingInput">pass</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="floatingInputRoleUser" placeholder="role"
+                        [(ngModel)]="userSession.role" />
+                      <label for="floatingInput">role</label>
+                    </div>
+                    <button style="float: right" type="button" class="btn btn-outline-primary" (click)="updateUser()">
+                      Guardar Usuario
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                  <button type="button" class="accordion-button btn-outline-danger" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Eliminar Usuario
+                  </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <button type="button" class="btn btn-warning" (click)="deleteUser(userSession._id)" data-bs-dismiss="modal">
+                      Confirmar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+           </div>
+           <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" (click)="cerrarSesion()" data-bs-dismiss="modal">
+              Cerrar Sesion
+            </button>
+           </div>
+         </div>
+       </div>
+     </div>
+      <!-- Modal AddUser -->
+      <div class="modal fade" id="CreateUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="CreateUserModalLabel">Nuevo Usuario</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              Nombre:
+              <input
+                type="text"
+                class="form-control"
+                aria-label="Sizing example input"
+                [(ngModel)]="userAdd.name"
+              />
+              Password:
+              <input
+                type="text"
+                class="form-control"
+                aria-label="Sizing example input"
+                [(ngModel)]="userAdd.pass"
+              />
+              Email:
+              <input
+                type="text"
+                class="form-control"
+                aria-label="Sizing example input"
+                [(ngModel)]="userAdd.email"
+              />
+              role:
+              <input
+                type="text"
+                class="form-control"
+                aria-label="Sizing example input"
+                [(ngModel)]="userAdd.role"
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="addUser()"
+                data-bs-dismiss="modal"
+              >
+                Agregar Contacto
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+     
+    </div>
+  </nav>
+
+  
+  

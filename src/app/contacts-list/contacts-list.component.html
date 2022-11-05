@@ -1,0 +1,140 @@
+<div>
+  <!-- Menú de botones (Agregar contacto, guardar lista) -->
+  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#CreateModal">
+    Agregar Contacto
+  </button>
+
+  <!-- <button type="button" class="btn btn-secondary" (click)="saveBuild()">
+    Guardar Lista
+  </button> -->
+
+  </div>
+  <!-- Modal Nuevo Contacto  -->
+  <div class="modal fade" id="CreateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="CreateModalLabel">Nuevo Contacto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div>
+            <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInputName" placeholder="name"
+              [(ngModel)]="contactInfo.name" />
+            <label for="floatingInput">name</label>
+            </div>
+            <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInputPhone" placeholder="phone"
+              [(ngModel)]="contactInfo.phone" />
+            <label for="floatingInput">phone</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="floatingInputAddress" placeholder="address"
+                [(ngModel)]="contactInfo.address" />
+              <label for="floatingInput">address</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="floatingInputEmail" placeholder="Email"
+                [(ngModel)]="contactInfo.email" />
+              <label for="floatingInput">Email</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="floatingInputJob" placeholder="Profesion"
+                [(ngModel)]="contactInfo.job" />
+              <label for="floatingInput">Profesion</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="floatingInputBirthdate" placeholder="Fecha Nacimiento"
+                [(ngModel)]="contactInfo.birthdate" />
+              <label for="floatingInput">Fecha Nacimiento</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="floatingInputLandline" placeholder="Telefono Fijo"
+                [(ngModel)]="contactInfo.landline" />
+              <label for="floatingInput">Telefono Fijo</label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" (click)="addContact()" data-bs-dismiss="modal">
+            Agregar Contacto
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+<div>
+  <!-- Lista de contactos  -->
+  <div>
+    <li class="list-group-item" *ngFor="let contact of contactList; let i = index">
+      <div>
+        <a class="btn btn-primary" data-bs-toggle="collapse" [href]="'#collapseId' + i" role="button"
+          aria-expanded="false" aria-controls="collapseExample">
+          {{ contact.name }} || {{ contact.phone }}
+        </a>
+        <div style="float: right" class="btn-group" role="group" aria-label="Basic mixed styles example">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#EditModal"
+            (click)="editContact(contact._id)">
+            Modificar
+          </button>
+          <button type="button" class="btn btn-danger" (click)="deleteContact(contact._id)">
+            Eliminar
+          </button>
+        </div>
+      </div>
+
+      <div class="collapse" [id]="'collapseId' + i">
+        <div class="card card-body">
+          <b>Direccion: </b> {{ contact.address }} <b>Email: </b>
+          {{ contact.email }} <b>Profesion: </b> {{ contact.job }}
+          <b>Fecha Nac: </b> {{ contact.birthdate }} <b>Telefono Fijo: </b>
+          {{ contact.landline }} <b>ID: </b>
+          {{ contact._id }}
+        </div>
+      </div>
+    </li>
+  </div>
+  <!-- Modal Editar Contacto -->
+  <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modificar Contacto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Nombre:
+          <input type="text" class="form-control" aria-label="Sizing example input" [(ngModel)]="contactEdit.name" />
+          Telefono:
+          <input type="text" class="form-control" aria-label="Sizing example input" [(ngModel)]="contactEdit.phone" />
+          Direccion:
+          <input type="text" class="form-control" aria-label="Sizing example input" [(ngModel)]="contactEdit.address" />
+          Email:
+          <input type="text" class="form-control" aria-label="Sizing example input" [(ngModel)]="contactEdit.email" />
+          Profesion:
+          <input type="text" class="form-control" aria-label="Sizing example input" [(ngModel)]="contactEdit.job" />
+          Fecha Nacimiento:
+          <input type="text" class="form-control" aria-label="Sizing example input"
+            [(ngModel)]="contactEdit.birthdate" />
+          Telefono Fijo:
+          <input type="text" class="form-control" aria-label="Sizing example input"
+            [(ngModel)]="contactEdit.landline" />
+          ID:
+          <input type="text" class="form-control" aria-label="Sizing example input" [(ngModel)]="contactEdit._id" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cerrar
+          </button>
+          <button type="button" class="btn btn-primary" (click)="updateContact()" data-bs-dismiss="modal">
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
